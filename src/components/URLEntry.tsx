@@ -26,22 +26,14 @@ const FormSchema = z.object({
 export function URLEntry() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    // defaultValues: {
-    //   url: "",
-    // },
+    defaultValues: {
+      url: "",
+    },
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const response = await fetch("/api", { method: "POST", body: JSON.stringify({ url: data.url }) }).then(res => res.json())
     console.log(response)
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // })
   }
 
   return (
@@ -52,12 +44,12 @@ export function URLEntry() {
           name="url"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              {/* <FormLabel>URL</FormLabel> */}
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                Enter a URL you want to lengthen
               </FormDescription>
               <FormMessage />
             </FormItem>
