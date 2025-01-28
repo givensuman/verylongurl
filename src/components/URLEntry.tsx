@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { toast } from "~/hooks/use-toast"
 import { Button } from "~/components/ui/button"
 import {
   Form,
@@ -12,7 +11,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form"
 import { Input } from "~/components/ui/input"
@@ -23,7 +21,11 @@ const FormSchema = z.object({
   }),
 })
 
-export function URLEntry() {
+export interface Props extends React.HTMLAttributes<HTMLFormElement> {
+  setUUID: (uuid: string) => void;
+}
+
+export function URLEntry({ setUUID, ...props }: Props) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -32,8 +34,7 @@ export function URLEntry() {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const response = await fetch("/api", { method: "POST", body: JSON.stringify({ url: data.url }) }).then(res => res.json())
-    console.log(response)
+    await fetch("/api", { method: "POST", body: JSON.stringify({ url: data.url }) }).then(res => res.json())
   }
 
   return (
@@ -44,7 +45,6 @@ export function URLEntry() {
           name="url"
           render={({ field }) => (
             <FormItem>
-              {/* <FormLabel>URL</FormLabel> */}
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
