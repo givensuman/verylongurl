@@ -34,7 +34,9 @@ export function URLEntry({ setUUID, ...props }: Props) {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    await fetch("/api", { method: "POST", body: JSON.stringify({ url: data.url }) }).then(res => res.json())
+    await fetch("/api", { method: "POST", body: JSON.stringify({ url: data.url }) })
+      .then(res => res.json())
+      .then(data => setUUID(data.uuid))
   }
 
   return (
